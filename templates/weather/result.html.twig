@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Votre météo !
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+            <h1>Bienvenue sur la page Météo</h1>
+            <span class="mb-5">&nbsp;</span>
+        </div>
+		<div class="row">
+            <div class="col-sm">
+                Le {{ data.day }} {{ data.date }}
+            </div>
+            <div class="col-sm">
+                À {{ data.country_name }} 
+                (lon. : {{ data.lon }}, lat. : {{ data.lat }})
+            </div>
+            <div class="col-sm">
+                {{ data.description }}
+            </div>
+            <div class="col-sm">
+                <img src={{ data.icon_img }}>
+            </div>
+            <div class="col-sm">
+                Température : {{ data.temperature }} °C (min. : {{ data.min }}, max. : {{ data.max }})
+            </div>
+            <div class="col-sm">
+                Pression : {{ data.pressure }} hPa
+            </div>
+            <div class="col-sm">
+                Humidité : {{ data.humidity }} %
+            </div>
+            <div class="col-sm">
+                Vent : {{ data.wind_speed }} km/h, {{ data.wind_deg }} degrés
+            </div>
+            <div class="col-sm">
+                Levé du soleil : {{ data.sunrise | date('d/m/Y H:s', "Europe/Paris")}}
+            </div>
+            <div class="col-sm">
+                Couché du soleil : {{ data.sunset | date('d/m/Y H:s', "Europe/Paris")}}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

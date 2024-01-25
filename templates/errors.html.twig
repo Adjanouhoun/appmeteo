@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Error occurs!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}
+            {{ error |nl2br }}
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

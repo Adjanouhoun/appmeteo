@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Position{% endblock %}
+
+{% block body %}
+    <h1>Position</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ position.id }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ position.longitude }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ position.latitude }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_position_index') }}">back to list</a>
+
+    <a href="{{ path('app_position_edit', {'id': position.id}) }}">edit</a>
+
+    {{ include('position/_delete_form.html.twig') }}
+{% endblock %}
