@@ -1,48 +1,155 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Votre météo !
+	Votre météo !
 {% endblock %}
 
-{% block content %}
-	<div class="container">
-		<div class="row">
-            <h1>Bienvenue sur la page Météo</h1>
-            <span class="mb-5">&nbsp;</span>
-        </div>
-		<div class="row">
-            <div class="col-sm">
-                Le {{ data.day }} {{ data.date }}
-            </div>
-            <div class="col-sm">
-                À {{ data.country_name }} 
-                (lon. : {{ data.lon }}, lat. : {{ data.lat }})
-            </div>
-            <div class="col-sm">
-                {{ data.description }}
-            </div>
-            <div class="col-sm">
-                <img src={{ data.icon_img }}>
-            </div>
-            <div class="col-sm">
-                Température : {{ data.temperature }} °C (min. : {{ data.min }}, max. : {{ data.max }})
-            </div>
-            <div class="col-sm">
-                Pression : {{ data.pressure }} hPa
-            </div>
-            <div class="col-sm">
-                Humidité : {{ data.humidity }} %
-            </div>
-            <div class="col-sm">
-                Vent : {{ data.wind_speed }} km/h, {{ data.wind_deg }} degrés
-            </div>
-            <div class="col-sm">
-                Levé du soleil : {{ data.sunrise | date('d/m/Y H:s', "Europe/Paris")}}
-            </div>
-            <div class="col-sm">
-                Couché du soleil : {{ data.sunset | date('d/m/Y H:s', "Europe/Paris")}}
-            </div>
-        </div>
-    </div>
+{% block detailmeteo %}
+	<section class="toady-detail pt-100">
+		<div class="container">
+			<div class="title text-center">
+				<h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Détails de la météoo</h2>
+			</div>
+			<div class="row">
+				<div class="col-xl-4 col-md-6 col-12 mb-xl-0 mb-3">
+					<div class="detail bg-white-1 p-100 text-center">
+						<div class="d-flex align-items-center justify-content-around mb-32">
+							<h4 class="fw-6 color-dark m-0">{{ data.country_name }}
+							</h4>
+							<img src="{ data.icon_img }}" alt="">
+						</div>
+						<h5 class="fw-5 fs-23 color-dark">{{ data.day }}
+							{{ data.date }}</h5>
+						<h2 class="fw-6 fs-95 lh-120 color-dark m-0">{{ data.temperature }}
+							<b>°</b>
+						</h2>
+						<p class="fw-6 mb-32 color-dark">{{ data.description }}</p>
+						<div class="d-flex align-items-center justify-content-center mb-24">
+							<span class="color-dark text-end">{{ data.wind_speed }}</span>
+							<span class="color-dark text-start">Vent</span>
+						</div>
+						<div class="d-flex align-items-center justify-content-center">
+							<span class="color-dark text-end">Hum</span>
+							<span class="color-dark text-start">{{ data.humidity }}</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-md-6 col-12 mb-xl-0 mb-3">
+					<div class="detail bg-white-1 st-2 text-center mb-24">
+						<img src="assets/media/icon/windy-dark.png" class=" mb-16" alt="">
+						<div class="d-flex align-items-center justify-content-center">
+							<p class="fw-5 fs-23 m-0 color-dark">Vent</p>
+							<p class="fw-6 fs-23 m-0 ms-3 color-dark">{{ data.wind_speed }}</p>
+						</div>
+					</div>
+					<div class="detail bg-white-1 st-2 text-center ">
+						<i class="fas fa-eye"></i>
+						<div class="d-flex align-items-center justify-content-center">
+							<p class="fw-5 fs-23 m-0 color-dark">Visibilité</p>
+							<p class="fw-6 fs-23 m-0 ms-3 color-dark">10 Km</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4 col-12">
+					<div class="row">
+						<div class="col-xl-12 col-md-6 col-12">
+							<div class="detail bg-white-1 st-2 text-center mb-24">
+								<i class="fas fa-raindrops"></i>
+								<div class="d-flex align-items-center justify-content-center">
+									<p class="fw-5 fs-23 m-0 color-dark">Humidité</p>
+									<p class="fw-6 fs-23 m-0 ms-3 color-dark">{{ data.humidity }}</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-12 col-md-6 col-12">
+							<div class="detail chart-block bg-white-1 st-2  text-center">
+								<div class="content">
+									<div class="text-end">
+										<img src="assets/media/icon/sun-icon-sm.png" class="mb-12" alt="">
+									</div>
+									<canvas id="myChart" width="100" height="40"></canvas>
+									<div class="d-flex align-items-center justify-content-between">
+										<div class="text-center">
+											<p class="color-dark-2">Sunrise</p>
+											<p class="color-dark-2 mb-0">{{ data.sunrise }}</p>
+										</div>
+										<div class="text-center">
+											<p class="color-dark-2">Sunset</p>
+											<p class="color-dark-2 mb-0">{{ data.sunset }}</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+{% block meteoparheure %}
+	<section class="hourly pt-100">
+		<div class="container">
+			<div class="title text-center">
+				<h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Prévision heure par heure
+				</h2>
+			</div>
+			<div class="hourly-slider">
+				{% for hourlyForecast in hourlyData %}
+					<div class="slider-block">
+						<div class="content text-center">
+							<img src="{{ hourlyForecast.icon_img }}" alt="">
+							<p class="fs-28 fw-4 mb-1">{{ hourlyForecast.temperature }}°</p>
+							<h2 class="fw-5 fs-19 mb-0">{{ hourlyForecast.condition }}</h2>
+							<div class="line"></div>
+							<div class="d-flex justify-content-center align-items-center mb-1">
+								<div class="weather-detail left-line">
+									<i class="fas fa-tint"></i>
+									<p class="fs-16 fw-4 lh-160 m-0">{{ hourlyForecast.humidity }}</p>
+								</div>
+								<div class="weather-detail">
+									<i class="fal fa-wind fa-flip-vertical"></i>
+									<p class="fs-16 fw-4 lh-160 m-0">{{ hourlyForecast.wind_speed }}/km</p>
+								</div>
+							</div>
+							<h2 class="fw-4 fs-19 m-0">{{ hourlyForecast.jour }}</h2>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
+{% endblock %}
+
+{% block detailsemaine %}
+
+	<section class="hourly pt-100">
+		<div class="container">
+			<div class="title text-center">
+				<h2 class="fw-5 fs-40 lh-120 ls-5 color-dark mb-16">Prévision de la semaine
+				</h2>
+
+			</div>
+			<div class="hourly-slider">
+
+				{% for day, forecast in jourData %}
+					<div class="slider-block">
+						<div class="content text-center">
+							<h2 class="fw-4 fs-19 m-0">{{ day }}</h2>
+							<i class="fas fa {{ forecast.condition.icon_css }} mb-8"></i>
+							<p class="fs-20 fw-4 mb-1">Min
+								{{ forecast.min_temp }}
+								°</p>
+							<p class="fs-20 fw-4 mb-1">Max
+								{{ forecast.max_temp }}
+								°</p>
+							<h2 class="fw-5 fs-19 mb-0">{{ forecast.condition.description }}</h2>
+
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</section>
 
 {% endblock %}
